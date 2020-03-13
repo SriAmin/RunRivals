@@ -1,13 +1,13 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import Hello from './src/Hello';
+import Login from './src/Login';
 
 const navigator = createStackNavigator(
   {
-    HelloPage: Hello,
+    LoginPage: Login,
   },
   {
-   intialRouteName: 'HelloPage',
+   intialRouteName: 'LoginPage',
    defaultNavigationOptions: {
      title: 'Run Rivals'
    } 
