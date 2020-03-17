@@ -47,7 +47,7 @@ const FacebookBtn = (props) => {
     //The button allowing user to sign in through facebook
     return <View>
         <TouchableOpacity onPress={logIn}>
-            <Text style={styles.fBookButton}>Log In Through Facebook</Text>
+            <Text style={styles.fBookButton}>Log In with Facebook</Text>
         </TouchableOpacity>
     </View>
 }
@@ -57,10 +57,11 @@ const styles = StyleSheet.create({
           padding: 15,
           backgroundColor: '#3b5998',
           color: 'white',
-          fontSize: 18,
+          fontSize: 14,
           textAlign: 'center',
           alignContent: 'center',
-          borderRadius: 10,
+          borderWidth: 1,
+          marginHorizontal: 10,
       }
 })
 

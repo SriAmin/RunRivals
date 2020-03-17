@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import {View, Text, TextInput, Button, StyleSheet, Image} from 'react-native'
 import FacebookBtn from '../components/FacebookBtn'
+import GoogleBtn from '../components/GoogleBtn'
 import * as Google from 'expo-google-app-auth';
 
 //iOS - 737913280141-ri24odrhv8afpam0psr6qnhub1uoopd5.apps.googleusercontent.com
@@ -38,10 +39,10 @@ const Login = () => {
                 <TextInput style={styles.textInput}/>
                 <Button title="Log In"/>
                 <Text style={styles.signUp}>No Account? <Text style={{color: 'blue'}} onPress={() => {alert("Sign Up Button Pressed")}}>Sign Up </Text> </Text>
+                <Image style={styles.imageStyle} source={{uri: url}} />
             </View>
             <View style={styles.socialContainer}>
-                <Image style={styles.imageStyle} source={{uri: url}} />
-                <Button title="Sign in With Google" onPress={signInWithGoogleAsync} />
+                <GoogleBtn />
                 <FacebookBtn urlSetter={setURL}/>
             </View>
     </View>
@@ -68,15 +69,16 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'center',
     },
+    imageStyle: {
+        width: 100,
+        height: 100,
+        marginBottom: 15,
+      },
     socialContainer: {
         justifyContent: 'center',
         alignItems: "center",
         marginBottom: 50,
-    },
-    imageStyle: {
-      width: 100,
-      height: 100,
-      marginBottom: 15,
+        flexDirection: "row",
     },
 })
 
