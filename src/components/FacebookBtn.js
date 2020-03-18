@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, Image} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Facebook from 'expo-facebook';
 
@@ -46,22 +46,27 @@ const FacebookBtn = (props) => {
 
     //The button allowing user to sign in through facebook
     return <View>
-        <TouchableOpacity onPress={logIn}>
+        <TouchableOpacity onPress={logIn} style={styles.btn}>
+            <Image source={require("../../assets/facebookIcon.png")} />
             <Text style={styles.fBookButton}>Log In with Facebook</Text>
         </TouchableOpacity>
     </View>
 }
 
 const styles = StyleSheet.create({
+      btn: {
+        flexDirection: 'row',
+        padding: 10,
+        backgroundColor: '#3b5998',
+        alignContent: 'center',
+        borderWidth: 1,
+        marginHorizontal: 5,
+      },
       fBookButton: {
-          padding: 15,
-          backgroundColor: '#3b5998',
           color: 'white',
+          padding: 5,
           fontSize: 14,
           textAlign: 'center',
-          alignContent: 'center',
-          borderWidth: 1,
-          marginHorizontal: 10,
       }
 })
 

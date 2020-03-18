@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, StyleSheet} from 'react-native'
+import {View, Text, StyleSheet, Image} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import * as Google from 'expo-google-app-auth';
 
@@ -39,7 +39,8 @@ const GoogleBtn = (props) => {
 
     //Displays the Google Sign in Button
     return <View>
-        <TouchableOpacity onPress={signInWithGoogleAsync}>
+        <TouchableOpacity onPress={signInWithGoogleAsync} style={styles.btn}>
+            <Image style={styles.imageBtn} source={require('../../assets/googleIcon.png')}/>
             <Text style={styles.googleButton}>
                 <Text style={{color: "#4285F4"}}>Sign </Text> 
                 <Text style={{color: "#DB4437"}}>in </Text> 
@@ -52,15 +53,21 @@ const GoogleBtn = (props) => {
 }
 
 const styles = StyleSheet.create({
-    googleButton: {
-        padding: 15,
-        fontSize: 14,
-        fontWeight: '600',
-        textAlign: 'center',
+    btn: {
+        padding: 10,
+        flexDirection: 'row',
         alignContent: 'center',
         borderWidth: 2,
-        borderRadius: 10,
-        marginHorizontal: 10,
+        borderRadius: 5,
+        marginHorizontal: 5,
+    },
+    imageBtn: {
+    },
+    googleButton: {
+        fontSize: 15,
+        padding: 5,
+        fontWeight: '600',
+        textAlign: 'center',
     }
 })
 
