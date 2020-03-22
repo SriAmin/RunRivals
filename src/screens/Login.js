@@ -4,21 +4,34 @@ import FacebookBtn from '../components/FacebookBtn'
 import GoogleBtn from '../components/GoogleBtn'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
-const Login = () => {
+const Login = (props) => {
+    let [email, setEmail] = useState("");
+    let [password, setPassword] = useState("");
+
     //State used for profile image obtained from social authentication (Google, Facebook)
     let [url, setURL] = useState("#");
+
+    let transitionHome = () => {
+        alert(`Login Pressed \n Email: ${email}\n Password: ${password}`)
+        props.navigation.navigate('HomePage')
+    }
+
+    let transitionSignUp = () => {
+        alert("Sign Up Button Pressed");
+        props.navigation.navigate('SignUpPage');
+    }
 
     //Represents the main login page with text fields and buttons for social authentication
     return <View style={styles.pageContainer}>
             <View style={styles.inputContainer}>
                 <Image style={styles.imageStyle} source={require('../../assets/icon.png')}/>
                 <Text style={{textAlign: 'center'}}></Text>
-                <TextInput style={styles.textInput} placeholder="Email"/>
-                <TextInput style={styles.textInput} placeholder="Password"/>
-                <TouchableOpacity onPress={() => {alert("Log In Pressed")}} style={styles.logInBtn}>
+                <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} />
+                <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)}/>
+                <TouchableOpacity onPress={transitionHome} style={styles.logInBtn}>
                     <Text style={{color: "white", fontSize: 18,}}>Log In</Text>
                 </TouchableOpacity>
-                <Text style={styles.signUp}>No Account? <Text style={{color: '#65418F'}} onPress={() => {alert("Sign Up Button Pressed")}}>Sign Up </Text> </Text>
+                <Text style={styles.signUp}>No Account? <Text style={{color: '#65418F'}} onPress={transitionSignUp}>Sign Up </Text> </Text>
                 <Image style={styles.imageStyle} source={{uri: url}} />
             </View>
             <View style={styles.socialContainer}>

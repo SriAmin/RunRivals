@@ -13,7 +13,7 @@ const GoogleBtn = (props) => {
         try {
             //Performs the request to sign in
             const result = await Google.logInAsync({
-                expoClientId: "737913280141-ha4lp7pabipqb1prqeneap6mso7fqrda.apps.googleusercontent.comgit c",
+                expoClientId: "737913280141-ha4lp7pabipqb1prqeneap6mso7fqrda.apps.googleusercontent.com",
                 iosClientId: "737913280141-ri24odrhv8afpam0psr6qnhub1uoopd5.apps.googleusercontent.com",
                 androidClientId: "737913280141-4pcmk2t56rllgrdqfmninh5t6blfljh9.apps.googleusercontent.com",
                 scopes: ['profile', 'email'],
