@@ -8,15 +8,12 @@ import SignUp from './src/screens/SignUp';
 //Allows navigation where squences acts like that of a stack
 const navigator = createStackNavigator(
   {
-    LoginPage: Login,
-    HomePage: Home,
-    SignUpPage: SignUp,
+    Login: Login,
+    'Home Page': Home,
+    'Sign Up': SignUp,
   },
   {
-   intialRouteName: 'LoginPage',
-   defaultNavigationOptions: {
-     title: 'Run Rivals'
-   } 
+   intialRouteName: 'Login',
   }
 )
 

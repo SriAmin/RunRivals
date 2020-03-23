@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {View, Text, TextInput, Button, StyleSheet, Image} from 'react-native'
+import {View, Text, TextInput, ScrollView, StyleSheet, Image} from 'react-native'
 import FacebookBtn from '../components/FacebookBtn'
 import GoogleBtn from '../components/GoogleBtn'
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -13,16 +13,16 @@ const Login = (props) => {
 
     let transitionHome = () => {
         alert(`Login Pressed \n Email: ${email}\n Password: ${password}`)
-        props.navigation.navigate('HomePage')
+        props.navigation.navigate('Home Page');
     }
 
     let transitionSignUp = () => {
         alert("Sign Up Button Pressed");
-        props.navigation.navigate('SignUpPage');
+        props.navigation.navigate('Sign Up');
     }
 
     //Represents the main login page with text fields and buttons for social authentication
-    return <View style={styles.pageContainer}>
+    return <ScrollView style={styles.pageContainer}>
             <View style={styles.inputContainer}>
                 <Image style={styles.imageStyle} source={require('../../assets/icon.png')}/>
                 <Text style={{textAlign: 'center'}}></Text>
@@ -38,7 +38,7 @@ const Login = (props) => {
                 <GoogleBtn urlSetter={setURL}/>
                 <FacebookBtn urlSetter={setURL}/>
             </View>
-    </View>
+    </ScrollView>
 }
 
 const styles = StyleSheet.create({
