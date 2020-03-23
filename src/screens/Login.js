@@ -5,20 +5,23 @@ import GoogleBtn from '../components/GoogleBtn'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const Login = (props) => {
+    let debug = true;
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
 
     //State used for profile image obtained from social authentication (Google, Facebook)
     let [url, setURL] = useState("#");
 
+    //Navigates to home page
     let transitionHome = () => {
-        alert(`Login Pressed \n Email: ${email}\n Password: ${password}`)
+        if (debug) { alert(`Login Pressed \n Email: ${email}\n Password: ${password}`) }
         props.navigation.navigate('Home Page');
     }
 
+    //Navigates to Sign Up page
     let transitionSignUp = () => {
-        alert("Sign Up Button Pressed");
-        props.navigation.navigate('Sign Up');
+        if (debug) { alert("Sign Up Button Pressed"); }
+        props.navigation.navigate('Sign Up', {sequence: 0, photoUrl: "https://getdrawings.com/free-icon/react-icon-69.png"});
     }
 
     //Represents the main login page with text fields and buttons for social authentication
@@ -35,8 +38,8 @@ const Login = (props) => {
                 <Image style={styles.imageStyle} source={{uri: url}} />
             </View>
             <View style={styles.socialContainer}>
-                <GoogleBtn urlSetter={setURL}/>
-                <FacebookBtn urlSetter={setURL}/>
+                <GoogleBtn urlSetter={setURL} debug = {true} navigate={props.navigation.navigate}/>
+                <FacebookBtn urlSetter={setURL} debug = {true} navigate={props.navigation.navigate}/>
             </View>
     </ScrollView>
 }

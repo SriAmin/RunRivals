@@ -1,6 +1,7 @@
 import React from 'react'
 import {View, Text, StyleSheet, Image} from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { withNavigation } from 'react-navigation';
 import * as Google from 'expo-google-app-auth';
 
 const GoogleBtn = (props) => {
@@ -22,8 +23,9 @@ const GoogleBtn = (props) => {
             //If login was successfull, it'll display user information and display profile picture
             if (result.type == "success"){
                 const user = result.user
-                alert(`Logged In! \n Hello ${user.name}\n Email: ${user.email}`)
+                if (props.debug) { alert(`Logged In! \n Hello ${user.name}\n Email: ${user.email}`) }
                 props.urlSetter(user.photoUrl);
+                props.navigate('Sign Up', {sequence: 1, photoUrl: user.photoUrl});
                 return result.accessToken;
             }
             //If user failed to log in 

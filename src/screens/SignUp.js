@@ -1,32 +1,46 @@
 import React, { useState } from 'react';
-import {View, Text, TextInput, StyleSheet, ScrollView, Button} from 'react-native';
+import {View, TextInput, StyleSheet, ScrollView, Button, Image} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const SignUp = () => {
-    let [sequence, setSequence] = useState(0);
+const SignUp = (props) => {
+    let [sequence, setSequence] = useState(props.navigation.getParam('sequence'));
     let display;
+
+    let updateSequence = () => {
+        let temp = sequence + 1;
+        setSequence(temp);
+    }
+
     if (sequence == 0) {
         display = (
             <View style={styles.inputContainer}>
                 <TextInput style={styles.textInput} placeholder="Email"/>
                 <TextInput style={styles.textInput} placeholder="Phone Number"/>
                 <TextInput style={styles.textInput} placeholder="Password"/>
-                <Button title="Next" onPress={() => setSequence(sequence++)}/>
+                <Button title="Next" onPress={() => updateSequence()}/>
             </View>
         )    
     }
     else if (sequence == 1) {
+        let photoUri = props.navigation.getParam('photoUrl')
+        
         display = (
-            <View>
-                <Text>Sequence 2</Text>
-                <Button title="Next" onPress={() => setSequence(sequence++)}/>
+            <View style={styles.inputContainer}>
+                <TouchableOpacity>
+                    <Image style={{width: 200, height: 200}} source={{uri: photoUri}}/>
+                </TouchableOpacity>
+                <TextInput style={styles.textInput} placeholder="Name"/>
+                <Button title="Next" onPress={() => updateSequence()}/>
             </View>
         )
     }
     else {
         display = (
-            <View>
-                <Text>Sequence 3</Text>
-                <Button title="Next" onPress={() => {alert("Hello")}}/>
+            <View style={styles.inputContainer}>
+                <TextInput style={styles.textInput} placeholder="Weight"/>
+                <TextInput style={styles.textInput} placeholder="Height"/>
+                <TextInput style={styles.textInput} placeholder="Goal"/>
+                <Button title="Finish" onPress={() => {alert("Hello")}}/>
             </View>
         )
     }
