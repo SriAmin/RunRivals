@@ -5,7 +5,7 @@ import GoogleBtn from '../components/GoogleBtn'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
 const Login = (props) => {
-    let debug = true;
+    let debug = false;
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
 
@@ -25,7 +25,7 @@ const Login = (props) => {
     }
 
     //Represents the main login page with text fields and buttons for social authentication
-    return <ScrollView style={styles.pageContainer}>
+    return <ScrollView style={styles.pageContainer} centerContent={true}>
             <View style={styles.inputContainer}>
                 <Image style={styles.imageStyle} source={require('../../assets/icon.png')}/>
                 <Text style={{textAlign: 'center'}}></Text>
