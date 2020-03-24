@@ -25,7 +25,7 @@ const GoogleBtn = (props) => {
                 const user = result.user
                 if (props.debug) { alert(`Logged In! \n Hello ${user.name}\n Email: ${user.email}`) }
                 props.urlSetter(user.photoUrl);
-                props.navigate('Sign Up', {sequence: 1, photoUrl: user.photoUrl});
+                props.navigate('Sign Up', {sequence: 0, photoUrl: user.photoUrl, email: user.email, name: user.name});
                 return result.accessToken;
             }
             //If user failed to log in 

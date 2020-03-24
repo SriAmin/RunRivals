@@ -31,7 +31,7 @@ const FacebookBtn = (props) => {
             console.log(json);
             if (props.debug) { alert(`Logged In! \nHello ${json.name}\n Email: ${json.email}`); }
             props.urlSetter(json.picture.data.url);
-            props.navigate('Sign Up', {sequence: 1, photoUrl: json.picture.data.url});
+            props.navigate('Sign Up', {sequence: 0, photoUrl: json.picture.data.url, email: json.email, name: json.name});
           }
           //If login failed, it'll simple display a failure message 
           else {

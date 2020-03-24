@@ -4,6 +4,16 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const SignUp = (props) => {
     let [sequence, setSequence] = useState(props.navigation.getParam('sequence'));
+
+    let [email, setEmail] = useState(props.navigation.getParam('email'));
+    let [phoneNum, setPhoneNum] = useState("");
+    let [password, setPassword] = useState("");
+    let [photoUri, setPhotoUri] = useState(props.navigation.getParam('photoUrl'));
+    let [name, setName] = useState(props.navigation.getParam('name'));
+    let [weight, setWeight] = useState("");
+    let [height, setHeight] = useState("");
+    let [goal, setGoal] = useState("");
+
     let display;
 
     let updateSequence = () => {
@@ -14,22 +24,20 @@ const SignUp = (props) => {
     if (sequence == 0) {
         display = (
             <View style={styles.inputContainer}>
-                <TextInput style={styles.textInput} placeholder="Email"/>
-                <TextInput style={styles.textInput} placeholder="Phone Number"/>
-                <TextInput style={styles.textInput} placeholder="Password"/>
+                <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} />
+                <TextInput style={styles.textInput} placeholder="Phone Number" value={phoneNum} onChangeText={(text) => setPhoneNum(text)} />
+                <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)} />
                 <Button title="Next" onPress={() => updateSequence()}/>
             </View>
         )    
     }
     else if (sequence == 1) {
-        let photoUri = props.navigation.getParam('photoUrl')
-        
         display = (
             <View style={styles.inputContainer}>
                 <TouchableOpacity>
                     <Image style={{width: 200, height: 200}} source={{uri: photoUri}}/>
                 </TouchableOpacity>
-                <TextInput style={styles.textInput} placeholder="Name"/>
+                <TextInput style={styles.textInput} placeholder="Name" value={name} onChangeText={(text) => setName(text)} />
                 <Button title="Next" onPress={() => updateSequence()}/>
             </View>
         )
@@ -37,10 +45,12 @@ const SignUp = (props) => {
     else {
         display = (
             <View style={styles.inputContainer}>
-                <TextInput style={styles.textInput} placeholder="Weight"/>
-                <TextInput style={styles.textInput} placeholder="Height"/>
-                <TextInput style={styles.textInput} placeholder="Goal"/>
-                <Button title="Finish" onPress={() => {alert("Hello")}}/>
+                <TextInput style={styles.textInput} placeholder="Weight" value={weight} onChangeText={(text) => setWeight(text)} />
+                <TextInput style={styles.textInput} placeholder="Height" value={height} onChangeText={(text) => setHeight(text)} />
+                <TextInput style={styles.textInput} placeholder="Goal" value={goal} onChangeText={(text) => setGoal(text)} />
+                <Button title="Finish" onPress={() => {
+                    alert(`Thanks for Signing In \n Email: ${email}\n Phone Number: ${phoneNum}\n Password: ${password}\n Photo URI: ${photoUri}\n Name: ${name}\n Weight: ${weight}\n Height: ${height}\n Goal: ${goal} `)}}
+                />
             </View>
         )
     }

@@ -21,7 +21,7 @@ const Login = (props) => {
     //Navigates to Sign Up page
     let transitionSignUp = () => {
         if (debug) { alert("Sign Up Button Pressed"); }
-        props.navigation.navigate('Sign Up', {sequence: 0, photoUrl: "https://getdrawings.com/free-icon/react-icon-69.png"});
+        props.navigation.navigate('Sign Up', {sequence: 0, photoUrl: "https://getdrawings.com/free-icon/react-icon-69.png", email: "", name: ""});
     }
 
     //Represents the main login page with text fields and buttons for social authentication
