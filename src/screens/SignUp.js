@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import {View, TextInput, StyleSheet, ScrollView, Button, Dimensions, Animated} from 'react-native';
+import React, { useState, useEffect, Component } from 'react';
+import {View, TextInput, StyleSheet, Text, Button, Dimensions, Animated} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 
 const SignUp = (props) => {
     let display;
@@ -11,20 +14,19 @@ const SignUp = (props) => {
     let [email, setEmail] = useState(props.navigation.getParam('email'));
     let [phoneNum, setPhoneNum] = useState("");
     let [password, setPassword] = useState("");
+
     let [photoUri, setPhotoUri] = useState(props.navigation.getParam('photoUrl'));
     let [name, setName] = useState(props.navigation.getParam('name'));
+    
     let [weight, setWeight] = useState("");
     let [height, setHeight] = useState("");
     let [goal, setGoal] = useState("");
-    let [progress, setProgress] = useState(0);
+    
     //Setting state variable for animating opacity
     let [fadeAnim, setFade] = useState(new Animated.Value(0))
+    let [slideAnim, setSlide] = useState(new Animated.Value(0));
     let fadeIn = Animated.timing ( fadeAnim, {toValue: 1, duration: 1000,});
-
-    //Will trigger fade in animation when screen is loaded in
-    React.useEffect(() => {
-        fadeIn.start();
-    }, [])
+    let progressSlide = Animated.timing ( slideAnim, {toValue: Dimensions.get('window').width / (3 - sequence), duration: 1000});
 
     //Called to change the sequeunce and display different inputs
     let updateSequence = () => {
@@ -33,75 +35,86 @@ const SignUp = (props) => {
         setSequence(temp);
     }
 
+    //Ask the user for permissions
+    const getPermissions = async () => {
+        if (Constants.platform.ios) {
+            const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                alert("Unless you want the default image, we need your permissions to access your photots");
+            }
+        }    
+    }
+
+    //Triggers camera roll event to allow user to pick profile image
+    const pickImage = async () => {
+        getPermissions();
+
+        let result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true
+        })
+        console.log(result);
+
+        if (!result.cancelled) {
+            setPhotoUri(result.uri);
+        }
+    }
+
     //1st Screen - Basic Authentication - Email, Phone Number, Password
     if (sequence == 0) {
         display = (
-            <View style={styles.inputContainer}>
-                <Animated.View
-                    style={{
-                        ...props.style,
-                        opacity: fadeAnim,
-                    }}
-                >
+                <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
                     <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} />
                     <TextInput style={styles.textInput} placeholder="Phone Number" value={phoneNum} onChangeText={(text) => setPhoneNum(text)} />
                     <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)} />
-                    <Button title="Next" onPress={() => updateSequence()}/>
+                    <TouchableOpacity  onPress={() => updateSequence()}>
+                        <Text style={styles.btnStyle}>Next</Text>
+                    </TouchableOpacity>
                 </Animated.View>
-            </View>
-        )    
+        )
+
+        fadeIn.start();
+        progressSlide.start();    
     }
     //2nd Screen - Social Data - Profile Picture, and Display Name
     else if (sequence == 1) {
         display = (
-            <View style={styles.inputContainer}>
-                <TouchableOpacity>
+                <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
+                    <TouchableOpacity onPress = {() => pickImage()}>
                         <Animated.Image style={styles.imageStyle} source={{uri: photoUri}}/>
-                </TouchableOpacity>
-                <Animated.View
-                    style={{
-                        ...props.style,
-                        opacity: fadeAnim,
-                        justifyContent: 'center',
-                    }}
-                >
+                    </TouchableOpacity>
                     <TextInput style={styles.textInput} placeholder="Name" value={name} onChangeText={(text) => setName(text)} />
-                    <Button title="Next" onPress={() => updateSequence()}/>
+                    <TouchableOpacity  onPress={() => updateSequence()}>
+                        <Text style={styles.btnStyle}>Next</Text>
+                    </TouchableOpacity>
                 </Animated.View>
-            </View>
         )
 
         fadeIn.start();
+        progressSlide.start();
     }
     //3rd Screen - Fitness Data - Weight, Height, Goal (Distance to reach each weekend)
     else {
 
         display = (
-            <View style={styles.inputContainer}>
-                <Animated.View
-                    style={{
-                        ...props.style,
-                        opacity: fadeAnim,
-                        justifyContent: 'center',
-                    }}
-                >
+                <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
                     <TextInput style={styles.textInput} placeholder="Weight" value={weight} onChangeText={(text) => setWeight(text)} />
                     <TextInput style={styles.textInput} placeholder="Height" value={height} onChangeText={(text) => setHeight(text)} />
                     <TextInput style={styles.textInput} placeholder="Goal" value={goal} onChangeText={(text) => setGoal(text)} />
-                    <Button title="Finish" onPress={() => {
-                        alert(`Thanks for Signing In \n Email: ${email}\n Phone Number: ${phoneNum}\n Password: ${password}\n Photo URI: ${photoUri}\n Name: ${name}\n Weight: ${weight}\n Height: ${height}\n Goal: ${goal} `)}}
-                    />
+                    <TouchableOpacity  onPress={() => {
+                        alert(`Thanks for Signing In \n Email: ${email}\n Phone Number: ${phoneNum}\n Password: ${password}\n Photo URI: ${photoUri}\n Name: ${name}\n Weight: ${weight}\n Height: ${height}\n Goal: ${goal} `)}}>
+                        <Text style={styles.btnStyle}>Next</Text>
+                    </TouchableOpacity>
                 </Animated.View>
-            </View>
         )
 
         fadeIn.start();
+        progressSlide.start();
     }
 
-    return <ScrollView style={styles.container}>
-        <View style={{height: 5, backgroundColor: '#65418F', width: Dimensions.get('window').width / (3 - sequence)}}/>
+    return <View style={styles.container}>
+        <Animated.View style={{height: 5, backgroundColor: '#00b4cf', width: slideAnim}}/>
         {display}
-    </ScrollView>
+    </View>
 
 }
 
@@ -109,15 +122,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    inputContainer: {
-        alignItems: "center",
-        marginTop: 100,
-    },
     imageStyle: {
         width: 200, 
         height: 200, 
         borderWidth: 1, 
         borderRadius: 50,
+    },
+    inputContainer: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 100,
     },
     textInput: {
         borderBottomWidth: 2,
@@ -128,6 +142,16 @@ const styles = StyleSheet.create({
         marginVertical: 15,
         width: 325
     },
+    btnStyle: {
+        fontSize: 20,
+        borderWidth: 5,
+        borderRadius: 10,
+        borderColor: '#00b4cf',
+        padding: 10,
+        paddingLeft: 55,
+        paddingRight: 55,
+        marginTop: 50,
+    }
 });
 
 export default SignUp;
