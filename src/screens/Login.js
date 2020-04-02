@@ -35,7 +35,6 @@ const Login = (props) => {
                     <Text style={{color: "white", fontSize: 18,}}>Log In</Text>
                 </TouchableOpacity>
                 <Text style={styles.signUp}>No Account? <Text style={{color: '#65418F'}} onPress={transitionSignUp}>Sign Up </Text> </Text>
-                <Image style={styles.imageStyle} source={{uri: url}} />
             </View>
             <View style={styles.socialContainer}>
                 <GoogleBtn urlSetter={setURL} debug = {true} navigate={props.navigation.navigate}/>
@@ -85,8 +84,8 @@ const styles = StyleSheet.create({
     socialContainer: {
         justifyContent: 'center',
         alignItems: "center",
-        marginBottom: 50,
         flexDirection: "row",
+        marginVertical: 50,
     },
 })
 
