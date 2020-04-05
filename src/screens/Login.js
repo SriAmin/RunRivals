@@ -19,8 +19,9 @@ const Login = (props) => {
     //State used for profile image obtained from social authentication (Google, Facebook)
     let [url, setURL] = useState("#");
 
-    //Navigates to home page
+    //Navigates to home page and authenticates user
     let transitionHome = async () => {
+        //Grabs user and check with email and password exist
         let users = await DataStore.query(User);
         let pass = false;
         users.forEach(element => {
@@ -34,6 +35,7 @@ const Login = (props) => {
                 pass = true;
             }
         });
+        //If passed, it'll navigate or just alert the user of authentication failure
         if (pass) {
             props.navigation.navigate('Home Page', {userData: user});
         }

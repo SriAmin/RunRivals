@@ -13,6 +13,7 @@ Amplify.configure(awsconfig);
 const Home = (props) => {
     const [userData, setUserData] = useState(props.navigation.getParam('userData'));
 
+    //Will fetch and log the data inside DataStore
     const fetchData = async () => {
         let users = await DataStore.query(User);
         console.log(users);
@@ -20,7 +21,7 @@ const Home = (props) => {
 
     return <View style={styles.container}>
         <Text style={{fontSize: 30}}>Welcome to the Home Page</Text>
-    <   Text>{userData.email}</Text>
+        <Text>{userData.email}</Text>
         <Text>{userData.password}</Text>
         <Text>{userData.photoUrl}</Text>
         <Text>{userData.name}</Text>

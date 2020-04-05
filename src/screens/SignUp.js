@@ -46,7 +46,9 @@ const SignUp = (props) => {
 
     let loadAnimation = () => { textSlide.start(); fadeIn.start(); progressSlide.start(); }
 
+    //Access AWS DataStore to get and submit data
     let uploadData = async () => {
+        //This will grab the data and check if email already exist
         let users = await DataStore.query(User);
         let isValid = true;
         users.forEach(element => {
@@ -55,6 +57,7 @@ const SignUp = (props) => {
             }
         });
 
+        //If email doesn't exist then it'll save new user data into the cloud
         if (isValid) {
             let tempHeight = parseInt(height)
             let tempWidth = parseInt(weight)
@@ -68,6 +71,7 @@ const SignUp = (props) => {
                 weight: tempWidth  
                 })
             )
+            //Assign the data and send the user to the home page
             let user = {};
             user["email"] = email
             user["password"] = password
