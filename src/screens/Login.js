@@ -4,18 +4,42 @@ import FacebookBtn from '../components/FacebookBtn'
 import GoogleBtn from '../components/GoogleBtn'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 
+import Amplify from "@aws-amplify/core";
+import { DataStore, Predicates } from "@aws-amplify/datastore";
+import { User } from "../models";
+
+import awsconfig from "../../aws-exports";
+Amplify.configure(awsconfig);
+
 const Login = (props) => {
     let debug = false;
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
-
+    let user = {}
     //State used for profile image obtained from social authentication (Google, Facebook)
     let [url, setURL] = useState("#");
 
     //Navigates to home page
-    let transitionHome = () => {
-        if (debug) { alert(`Login Pressed \n Email: ${email}\n Password: ${password}`) }
-        props.navigation.navigate('Home Page');
+    let transitionHome = async () => {
+        let users = await DataStore.query(User);
+        let pass = false;
+        users.forEach(element => {
+            if (email === element.email && password == element.password) {
+                user["email"] = element.email
+                user["password"] = element.password
+                user["photoUrl"] = element.photoUrl
+                user["name"] = element.name
+                user["height"] = element.height
+                user["weight"] = element.weight
+                pass = true;
+            }
+        });
+        if (pass) {
+            props.navigation.navigate('Home Page', {userData: user});
+        }
+        else {
+            alert("Log In Failed, Look Into Email and Password")
+        }
     }
 
     //Navigates to Sign Up page

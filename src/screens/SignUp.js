@@ -3,6 +3,13 @@ import {View, TextInput, StyleSheet, Text, Image, Dimensions, Animated} from 're
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageSelector from '../components/ImageSelector';
 
+import Amplify from "@aws-amplify/core";
+import { DataStore, Predicates } from "@aws-amplify/datastore";
+import { User } from "../models";
+
+import awsconfig from "../../aws-exports";
+Amplify.configure(awsconfig);
+
 const SignUp = (props) => {
     let display;
 
@@ -39,6 +46,43 @@ const SignUp = (props) => {
 
     let loadAnimation = () => { textSlide.start(); fadeIn.start(); progressSlide.start(); }
 
+    let uploadData = async () => {
+        let users = await DataStore.query(User);
+        let isValid = true;
+        users.forEach(element => {
+            if (email == element.email) {
+                isValid = false
+            }
+        });
+
+        if (isValid) {
+            let tempHeight = parseInt(height)
+            let tempWidth = parseInt(weight)
+            await DataStore.save(
+                new User({
+                email: email,
+                password: password,
+                photoUrl: photoUri,
+                name: name,
+                height: tempHeight,
+                weight: tempWidth  
+                })
+            )
+            let user = {};
+            user["email"] = email
+            user["password"] = password
+            user["photoUrl"] = photoUri
+            user["name"] = name
+            user["height"] = height
+            user["weight"] = weight
+
+            props.navigation.navigate('Home Page',  {userData: user});
+        }
+        else {
+            alert("That Username already exist, please submit a new email")
+        }
+    }
+
     //1st Screen - Basic Authentication - Email, Phone Number, Password
     if (sequence == 0) {
         display = <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
@@ -71,11 +115,11 @@ const SignUp = (props) => {
 
         display = <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
                     <Animated.View style={{width: inputSlide}}>
-                        <TextInput style={styles.textInput} placeholder="Weight" value={weight} onChangeText={(text) => setWeight(text)} />
-                        <TextInput style={styles.textInput} placeholder="Height" value={height} onChangeText={(text) => setHeight(text)} />
+                        <TextInput style={styles.textInput} placeholder="Weight" value={weight} onChangeText={(text) => setWeight(text)} keyboardType="numeric"/>
+                        <TextInput style={styles.textInput} placeholder="Height" value={height} onChangeText={(text) => setHeight(text)} keyboardType="numeric"/>
                         <TextInput style={styles.textInput} placeholder="Goal" value={goal} onChangeText={(text) => setGoal(text)} />
                     </Animated.View>
-                    <TouchableOpacity  onPress={() => {alert(`Thanks for Signing In \n Email: ${email}\n Phone Number: ${phoneNum}\n Password: ${password}\n Photo URI: ${photoUri}\n Name: ${name}\n Weight: ${weight}\n Height: ${height}\n Goal: ${goal} `)}}>
+                    <TouchableOpacity  onPress={() => {uploadData()}}>
                         <Text style={styles.btnStyle}>Finish</Text>
                     </TouchableOpacity>
                 </Animated.View>
