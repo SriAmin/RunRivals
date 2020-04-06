@@ -17,7 +17,12 @@ const Home = (props) => {
     const fetchData = async () => {
         let users = await DataStore.query(User);
         console.log(users);
-      }
+    }
+
+    //Used for debugging, it'll delete the user in DataStore
+    const deleteUser = async () => {
+      await DataStore.delete(User, c => c.email("eq", userData.email));
+    }
 
     return <View style={styles.container}>
         <Text style={{fontSize: 30}}>Welcome to the Home Page</Text>
@@ -28,6 +33,7 @@ const Home = (props) => {
         <Text>{userData.height}</Text>
         <Text>{userData.weight}</Text>
         <Button title="Fetch Data" onPress={() => {fetchData()}} />
+        <Button title="Delete User" onPress={() => {deleteUser()}} />
     </View>
 }
 

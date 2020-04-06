@@ -16,8 +16,6 @@ const Login = (props) => {
     let [email, setEmail] = useState("");
     let [password, setPassword] = useState("");
     let user = {}
-    //State used for profile image obtained from social authentication (Google, Facebook)
-    let [url, setURL] = useState("#");
 
     //Navigates to home page and authenticates user
     let transitionHome = async () => {
@@ -55,16 +53,16 @@ const Login = (props) => {
             <View style={styles.inputContainer}>
                 <Image style={styles.imageStyle} source={require('../../assets/icon.png')}/>
                 <Text style={{textAlign: 'center'}}></Text>
-                <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} />
-                <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)}/>
+                <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} autoCapitalize="none" />
+                <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)} autoCapitalize="none"/>
                 <TouchableOpacity onPress={transitionHome} style={styles.logInBtn}>
                     <Text style={{color: "white", fontSize: 18,}}>Log In</Text>
                 </TouchableOpacity>
                 <Text style={styles.signUp}>No Account? <Text style={{color: '#65418F'}} onPress={transitionSignUp}>Sign Up </Text> </Text>
             </View>
             <View style={styles.socialContainer}>
-                <GoogleBtn urlSetter={setURL} debug = {true} navigate={props.navigation.navigate}/>
-                <FacebookBtn urlSetter={setURL} debug = {true} navigate={props.navigation.navigate}/>
+                <GoogleBtn debug = {true} navigate={props.navigation.navigate}/>
+                <FacebookBtn debug = {true} navigate={props.navigation.navigate}/>
             </View>
     </ScrollView>
 }
@@ -76,7 +74,8 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexGrow: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginBottom: 100,
     },
     textInput: {
         borderBottomWidth: 2,
@@ -111,7 +110,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: "center",
         flexDirection: "row",
-        marginVertical: 50,
     },
 })
 

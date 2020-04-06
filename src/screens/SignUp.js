@@ -91,9 +91,9 @@ const SignUp = (props) => {
     if (sequence == 0) {
         display = <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
                     <Animated.View style={{width: inputSlide}}>
-                        <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} />
-                        <TextInput style={styles.textInput} placeholder="Phone Number" value={phoneNum} onChangeText={(text) => setPhoneNum(text)} />
-                        <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)} />
+                        <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} autoCapitalize="none" />
+                        <TextInput style={styles.textInput} placeholder="Phone Number" value={phoneNum} onChangeText={(text) => setPhoneNum(text)} autoCapitalize="none"/>
+                        <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)} autoCapitalize="none"/>
                     </Animated.View>
                     <TouchableOpacity onPress={() => updateSequence()}> 
                         <Text style={styles.btnStyle}>Next</Text> 
@@ -119,8 +119,8 @@ const SignUp = (props) => {
 
         display = <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
                     <Animated.View style={{width: inputSlide}}>
-                        <TextInput style={styles.textInput} placeholder="Weight" value={weight} onChangeText={(text) => setWeight(text)} keyboardType="numeric"/>
-                        <TextInput style={styles.textInput} placeholder="Height" value={height} onChangeText={(text) => setHeight(text)} keyboardType="numeric"/>
+                        <TextInput style={styles.textInput} placeholder="Weight (lbs)" value={weight} onChangeText={(text) => setWeight(text)} keyboardType="numeric"/>
+                        <TextInput style={styles.textInput} placeholder="Height (cm)" value={height} onChangeText={(text) => setHeight(text)} keyboardType="numeric"/>
                         <TextInput style={styles.textInput} placeholder="Goal" value={goal} onChangeText={(text) => setGoal(text)} />
                     </Animated.View>
                     <TouchableOpacity  onPress={() => {uploadData()}}>

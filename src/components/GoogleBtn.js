@@ -4,6 +4,13 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { withNavigation } from 'react-navigation';
 import * as Google from 'expo-google-app-auth';
 
+import Amplify from "@aws-amplify/core";
+import { DataStore, Predicates } from "@aws-amplify/datastore";
+import { User } from "../models";
+
+import awsconfig from "../../aws-exports";
+Amplify.configure(awsconfig);
+
 const GoogleBtn = (props) => {
 
     //iOS - 737913280141-ri24odrhv8afpam0psr6qnhub1uoopd5.apps.googleusercontent.com
@@ -24,8 +31,30 @@ const GoogleBtn = (props) => {
             if (result.type == "success"){
                 const user = result.user
                 if (props.debug) { alert(`Logged In! \n Hello ${user.name}\n Email: ${user.email}`) }
-                props.urlSetter(user.photoUrl);
-                props.navigate('Sign Up', {sequence: 0, photoUrl: user.photoUrl, email: user.email, name: user.name});
+
+                 //This will grab the data and check if email already exist
+                let userData = {} 
+                let users = await DataStore.query(User);
+                let doesExist = false;
+                users.forEach(element => {
+                    if (user.email == element.email) {
+                        userData["email"] = element.email
+                        userData["password"] = element.password
+                        userData["photoUrl"] = element.photoUrl
+                        userData["name"] = element.name
+                        userData["height"] = element.height
+                        userData["weight"] = element.weight
+                        doesExist = true
+                    }
+                });
+                //If email exist, it'll transfer user to HomePage
+                if (doesExist) {
+                    props.navigate('Home Page', {userData: userData});
+                }
+                //If not, it'll guide the user to the Sign Up Process
+                else {
+                    props.navigate('Sign Up', {sequence: 0, photoUrl: user.photoUrl, email: user.email, name: user.name});
+                }
                 return result.accessToken;
             }
             //If user failed to log in 
