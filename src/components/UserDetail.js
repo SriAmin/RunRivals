@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const UserDetail = (props) => {
+
+    //Used the determine if the styling is changed based of the user being shown
     let viewStyle = () => {
+        //If the data is the user logged in currently
         if (props.data.isUser) {
             return {
                 flex: 1,
@@ -14,6 +17,7 @@ const UserDetail = (props) => {
                 backgroundColor: "#cdf2f7"
             }
         }
+        //Another person on the DataStore
         else {
             return {
                 flex: 1,
@@ -25,9 +29,15 @@ const UserDetail = (props) => {
         }
     }
 
+    //Mainly for debugging, it'll display all the emails on the leaderboard
+    useEffect(() => {
+        console.log(props.data.email)
+    }, [])
+
     return <TouchableOpacity style={viewStyle()} onPress={() => {}}>
         <View style={styles.rankContainer}>
-            <Text style={[styles.textStyle, {fontSize: 25}]}># {props.rank}</Text>
+            <Text style={[styles.textStyle, {fontSize: 25, borderBottomWidth: 2, borderColor: "black"}]}># {props.rank}</Text>
+            <View style={styles.spacing}/>
             <Text style={[styles.textStyle, {fontSize: 18}]}>{props.data.distance} m</Text>
         </View>
         <View style={styles.imageContainer}>
@@ -65,20 +75,26 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    spacing: {
+        height: 1, 
+        width: 50, 
+        backgroundColor: "black",
+        marginVertical: 5,
+    },
     imageStyle: {
         width: 100, 
-        height: 100, 
+        height: 100,
         borderWidth: 1, 
         borderRadius: 25,
     },
     username: {
-        fontSize: 16,
+        fontSize: 18,
         marginTop: 5,
     },
     textStyle: {
         color: "#65418F",
-        fontSize: 14,
-        fontWeight: "500"
+        fontSize: 16,
+        fontWeight: "500",
     }
 })
 
