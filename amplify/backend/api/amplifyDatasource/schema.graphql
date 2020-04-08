@@ -6,4 +6,5 @@ type User @model {
   name: String
   height: Int
   weight: Int
+  distance: Int
 }

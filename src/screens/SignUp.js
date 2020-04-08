@@ -68,7 +68,8 @@ const SignUp = (props) => {
                 photoUrl: photoUri,
                 name: name,
                 height: tempHeight,
-                weight: tempWidth  
+                weight: tempWidth,
+                distance: 0  
                 })
             )
             //Assign the data and send the user to the home page
@@ -79,6 +80,7 @@ const SignUp = (props) => {
             user["name"] = name
             user["height"] = height
             user["weight"] = weight
+            user["distance"] = 0;
 
             props.navigation.navigate('Home Page',  {userData: user});
         }

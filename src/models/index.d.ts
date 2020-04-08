@@ -12,6 +12,7 @@ export declare class User {
   readonly name?: string;
   readonly height?: number;
   readonly weight?: number;
+  readonly distance?: number;
   constructor(init: ModelInit<User>);
   static copyOf(source: User, mutator: (draft: MutableModel<User>) => MutableModel<User> | void): User;
 }
