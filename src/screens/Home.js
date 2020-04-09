@@ -25,17 +25,16 @@ const Home = ( { navigation} ) => {
         <Text style={{fontSize: 30}}>Welcome to the Home Page</Text>
         <Text style = {styles.rankLabel}>Rank: </Text>
         <Text style = {styles.rank}>0/60</Text>
-        <Button style = {styles.leaderboardButton} title="LeaderBoard"/>
+        <View style={{width: 200, alignItems: "stretch"}}>
+        <Button style = {styles.leaderboardButton} title="Leader Board"/>
+        </View>
         <Text style = {styles.averageSpeedLabel}>Average Speed: </Text>
-        <Text>km/h</Text>
+        <Text style={styles.averageSpeed}>km/h</Text>
         <View style={styles.progressBar}></View>
-        <Text>Distance Achieved: 0 km</Text>
+        <Text style={styles.distanceLabel}>Distance Achieved: 0 km</Text>
         <Text>{userData.email}</Text>
-        <Text>{userData.password}</Text>
         <Image styles = {styles.profilePicture} />
         <Text>{userData.name}</Text>
-        <Text>{userData.height}</Text>
-        <Text>{userData.weight}</Text>
         <Button title="Fetch Data" onPress={() => {fetchData()}} />
         <Button title="Delete User" onPress={() => {deleteUser()}} />
     </View>
@@ -43,35 +42,57 @@ const Home = ( { navigation} ) => {
 
 const styles = StyleSheet.create({
     container: {
-      justifyContent:'center',
-      alignItems: 'stretch'
+      alignItems: 'center'
     },
     profilePicture: {
       height: 100,
       width: 100
     },
     rankLabel: {
-      fontSize: 30,
+      fontSize: 45,
       fontWeight: 'bold',
-      marginVertical: 10.
+      marginTop: 70
     },
     rank: {
-      fontSize: 25,
+      fontSize: 35,
+      marginTop: 30,
+      marginBottom: 50
     },
     leaderboardButton: {
-      width: 15
+      width: 100,
+      padding: 12.5,
+      paddingLeft: 100,
+      paddingRight: 50,
+      borderRadius: 10,
+      borderWidth: 2,
+      marginBottom:100,
+      textAlign:'justify'
     },
     averageSpeedLabel: {
+      fontSize: 35,
+      width: '65.25%',
+      fontWeight:'bold',
+      marginTop: 100,
+      marginBottom: 30
+    },
+    averageSpeed: {
       fontSize: 25,
-      fontWeight:'bold'
+      marginHorizontal: 50,
+      marginBottom: 30
+      
     },
     progressBar: {
       height: 20,
-      width: '100%',
+      width: '90%',
+      alignSelf:'center',
       backgroundColor: 'white',
       borderColor: 'blue',
       borderWidth: 2,
-      borderRadius: 5
+      borderRadius: 20
+    },
+    distanceLabel: {
+      fontSize: 20,
+      marginVertical: 30
     }
 });
 

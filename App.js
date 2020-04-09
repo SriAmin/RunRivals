@@ -15,9 +15,10 @@ const navigator = createStackNavigator(
     Leaderboard: LeaderBoard,
   },
   {
-   intialRouteName: 'Login',
-   title: 'Run Rivals'
-  }
-)
+   initialRouteName: 'Login',
+   defaultNavigationOpitons: {
+    title: 'Run Rivals'
+   }
+  });
 
 export default createAppContainer(navigator);
