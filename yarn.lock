@@ -2937,6 +2937,13 @@ expo-permissions@*, expo-permissions@~8.0.0:
   resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-8.0.0.tgz#5a45e8451dd7ff37c9e6ce5e2447818372547813"
   integrity sha512-GHTRmwh1rd1b0FcibluPFu93NNQyl9b1anBBDVPmomoo9Prz7kDcO5p2hFqM99r896yvAUSe0fPloPKUq4g/1A==
 
+expo-sensors@~8.1.0:
+  version "8.1.0"
+  resolved "https://registry.yarnpkg.com/expo-sensors/-/expo-sensors-8.1.0.tgz#2b46cb80c7e18a9fab9a6aca4e99c558a93389e1"
+  integrity sha512-WLpAOfrYkJiOu+Erhjg20EKcCOaFLfm1JGRz9wiLsXH8ebY13KL2qFSpTVt89eGF66DtV/zwchCqRAjrNGdzTw==
+  dependencies:
+    invariant "^2.2.4"
+
 expo-sqlite@~8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/expo-sqlite/-/expo-sqlite-8.0.0.tgz#293b45c78d612ab25400c8c579bd7d73f06ccb6f"

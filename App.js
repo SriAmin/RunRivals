@@ -16,6 +16,7 @@ const navigator = createStackNavigator(
   },
   {
    intialRouteName: 'Login',
+   title: 'Run Rivals'
   }
 )
 
