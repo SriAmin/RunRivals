@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, Button} from 'react-native';
+import {View, Text, StyleSheet, Button, Image} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
@@ -28,7 +28,7 @@ const Home = (props) => {
         <Text style={{fontSize: 30}}>Welcome to the Home Page</Text>
         <Text>{userData.email}</Text>
         <Text>{userData.password}</Text>
-        <Text>{userData.photoUrl}</Text>
+        <Image style={{width: 100, height: 100}} source={{uri : userData.photoUrl}} />
         <Text>{userData.name}</Text>
         <Text>{userData.height}</Text>
         <Text>{userData.weight}</Text>

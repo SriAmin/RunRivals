@@ -43,6 +43,10 @@ const LeaderBoard = (props) => {
                 isUser : isUser
             })
         });
+
+        displayInfo.sort(function(a,b) {
+            return b.distance - a.distance
+        })
     }
 
     //This will be sent to display the rank of the user
