@@ -11,23 +11,10 @@ Amplify.configure(awsconfig);
 const Profile = (props) => {
     const [userData, setUserData] = useState(props.navigation.getParam('userData'));
 
-    let userObject;
-
-    useEffect(() => {
-        console.log(userData);
-    }, [])
-
-    // const fetchProfile = async () => {
-    //     const user = await DataStore.query(User, e => e.email("eq", userEmail));
-    //     userObject = user[0]
-    //     console.log(userObject)
-        
-    // };
-
     return <View style={styles.container}>
         <View style={styles.main}>
             <Image style={styles.imageStyle} source={{uri : userData.photoUrl}} />
-            <Text style={{fontSize: 25, marginTop: 15, color: "#65418F", fontWeight:"500"}}>{userData.name}</Text>
+            <Text style={{fontSize: 25, marginTop: 15, marginLeft: 50, color: "#65418F", fontWeight:"500"}}>{userData.name}</Text>
         </View>
         <View style={styles.secondary}>
             <View>
@@ -53,13 +40,15 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        flexDirection: "row"
     },
     secondary: {
         borderTopWidth: 2,
         flex: 3,
         alignItems: "flex-start",
-        flexDirection: "row"
+        flexDirection: "row",
+        borderBottomWidth: 2,
     },
     imageStyle: {
         width: 125,
