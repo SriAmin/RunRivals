@@ -44,6 +44,7 @@ const LeaderBoard = (props) => {
             })
         });
 
+        //Sorts the array based on the distance
         displayInfo.sort(function(a,b) {
             return b.distance - a.distance
         })
