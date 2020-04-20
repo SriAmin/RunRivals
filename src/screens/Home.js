@@ -3,6 +3,9 @@ import {View, Text, StyleSheet, Button, Image} from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
+import { TouchableOpacity } from 'react-native-gesture-handler'
+
+
 import Amplify from "@aws-amplify/core";
 import { DataStore, Predicates } from "@aws-amplify/datastore";
 import { User } from "../models";
@@ -28,7 +31,9 @@ const Home = (props) => {
         <Text style={{fontSize: 30}}>Welcome to the Home Page</Text>
         <Text>{userData.email}</Text>
         <Text>{userData.password}</Text>
-        <Image style={{width: 100, height: 100}} source={{uri : userData.photoUrl}} />
+        <TouchableOpacity onPress={() => {props.navigation.navigate("Profile", {userData: userData})}}>
+          <Image style={{width: 100, height: 100}} source={{uri : userData.photoUrl}} />
+        </TouchableOpacity>
         <Text>{userData.name}</Text>
         <Text>{userData.height}</Text>
         <Text>{userData.weight}</Text>
@@ -44,6 +49,13 @@ const styles = StyleSheet.create({
       justifyContent: "center",
       alignItems: "center"  
     },
+    imageStyle: {
+      width: 200, 
+      height: 200, 
+      borderWidth: 1, 
+      borderRadius: 50,
+      marginVertical: 25,
+  },
 });
 
 export default Home;

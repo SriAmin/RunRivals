@@ -165,7 +165,8 @@ const styles = StyleSheet.create({
         paddingLeft: 55,
         paddingRight: 55,
         marginTop: 50,
-    }
+    },
+
 });
 
 export default SignUp;
