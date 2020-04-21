@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
-import {View, Text, StyleSheet, Image} from 'react-native'
+import {View, Text, StyleSheet, Image, Button} from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Profile = (props) => {
     //Will contain the data passed into this class
@@ -7,13 +8,21 @@ const Profile = (props) => {
     const isUser = props.navigation.getParam('isUser');
     const [passwordHeader, setPasswordHeader] = useState(<View></View>);
     const [passwordData, setPasswordData] = useState(<View></View>);
+    const [changeButton, setChangeButton] = useState(<View style={styles.ternary}></View>);
 
     //Based on isUser condition, it'll render the password data
     useEffect(() => {
         //If the profile is the user signed in currently
         if (isUser == true) {
-            setPasswordHeader(<Text style={styles.infoText}>Password:</Text>)
+            setPasswordHeader(<Text style={[styles.infoText, {fontWeight: "500"}]}>Password:</Text>)
             setPasswordData(<Text style={styles.infoText}>{userData.password}</Text>)
+            setChangeButton(
+                <View style={styles.ternary}>
+                    <TouchableOpacity onPress={() => {}}>
+                        <Text style={styles.changeButton}>Change Information</Text>
+                    </TouchableOpacity>
+                </View>
+            )
         }
     }, [])
 
@@ -24,10 +33,10 @@ const Profile = (props) => {
         </View>
         <View style={styles.secondary}>
             <View>
-                <Text style={styles.infoText}>Email:</Text>
+                <Text style={[styles.infoText, {fontWeight: "500"}]}>Email:</Text>
                 {passwordHeader}
-                <Text style={styles.infoText}>Height:</Text>
-                <Text style={styles.infoText}>Weight:</Text>
+                <Text style={[styles.infoText, {fontWeight: "500"}]}>Height:</Text>
+                <Text style={[styles.infoText, {fontWeight: "500"}]}>Weight:</Text>
             </View>
             <View>
                 <Text style={styles.infoText}>{userData.email}</Text>
@@ -36,6 +45,7 @@ const Profile = (props) => {
                 <Text style={styles.infoText}>{userData.weight} lbs</Text>
             </View>
         </View>
+        {changeButton}
     </View>
 }
 
@@ -51,10 +61,15 @@ const styles = StyleSheet.create({
     },
     secondary: {
         borderTopWidth: 2,
-        flex: 3,
-        alignItems: "flex-start",
+        flex: 1,
+        alignItems: "center",
         flexDirection: "row",
         borderBottomWidth: 2,
+        padding: 25,
+    },
+    ternary: {
+        flex: 2,
+        alignItems: "center",
     },
     imageStyle: {
         width: 125,
@@ -67,7 +82,18 @@ const styles = StyleSheet.create({
         fontSize: 20,
         padding: 15,
         fontWeight: "300",
-    }
+    },
+    changeButton: {
+        marginTop: 35,
+        borderWidth: 3,
+        padding: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
+        borderColor: "#65418F",
+        marginHorizontal: 15,
+        borderRadius: 20,
+        fontSize: 16,
+    },
 });
 
 export default Profile;
