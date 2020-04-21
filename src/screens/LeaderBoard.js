@@ -2,11 +2,11 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
 import UserDetail from '../components/UserDetail'
 
-import Amplify from "@aws-amplify/core";
-import { DataStore, Predicates } from "@aws-amplify/datastore";
+import Amplify from '@aws-amplify/core';
+import {DataStore, Predicates } from '@aws-amplify/datastore';
 import { User } from "../models";
 
-import awsconfig from "../../aws-exports";
+import awsconfig from '../../aws-exports';
 Amplify.configure(awsconfig);
 
 const LeaderBoard = (props) => {
@@ -21,7 +21,7 @@ const LeaderBoard = (props) => {
     //Will execute once the screen renders
     useEffect (() => {
         fetchData();
-    })
+    }, [])
 
     //Fetch the user data and apply it to a new array for the FlatList
     const fetchData = async () => { 
@@ -56,7 +56,7 @@ const LeaderBoard = (props) => {
         <FlatList 
             data={displayInfo}
             keyExtractor={item => item.id}
-            renderItem={({item}) => <UserDetail data={item} rank={count++}/>}
+            renderItem={({item}) => <UserDetail data={item} rank={count++} navigate={props.navigation.navigate}/>}
         />
     </View>
 }

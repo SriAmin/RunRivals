@@ -9,6 +9,7 @@ import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 
 const Profile = (props) => {
+    //Will contain the data passed into this class
     const [userData, setUserData] = useState(props.navigation.getParam('userData'));
 
     return <View style={styles.container}>
