@@ -5,6 +5,7 @@ import Home from './src/screens/Home';
 import SignUp from './src/screens/SignUp';
 import LeaderBoard from './src/screens/LeaderBoard';
 import Profile from './src/screens/Profile';
+import UpdateProfile from './src/screens/UpdateProfile';
 
 //Main Stack Navigator Function:
 //Allows navigation where squences acts like that of a stack
@@ -14,7 +15,8 @@ const navigator = createStackNavigator(
     'Home Page': Home,
     'Sign Up': SignUp,
     Leaderboard: LeaderBoard,
-    Profile : Profile
+    Profile : Profile,
+    "Update Profile" : UpdateProfile
   },
   {
    intialRouteName: 'Login',
