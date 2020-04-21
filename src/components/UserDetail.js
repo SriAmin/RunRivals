@@ -57,7 +57,7 @@ const UserDetail = (props) => {
             weight: user.weight
         }
         console.log(data)
-        props.navigate("Profile", {userData: data})
+        props.navigate("Profile", {userData: data, isUser: false})
     }
 
     return <TouchableOpacity style={viewStyle()} onPress={() => {navigateProfile()}}>

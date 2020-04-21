@@ -1,16 +1,21 @@
 import React, {useState, useEffect} from 'react'
 import {View, Text, StyleSheet, Image} from 'react-native'
 
-import Amplify from "@aws-amplify/core";
-import { DataStore, Predicates } from "@aws-amplify/datastore";
-import { User } from "../models";
-
-import awsconfig from "../../aws-exports";
-Amplify.configure(awsconfig);
-
 const Profile = (props) => {
     //Will contain the data passed into this class
     const [userData, setUserData] = useState(props.navigation.getParam('userData'));
+    const isUser = props.navigation.getParam('isUser');
+    const [passwordHeader, setPasswordHeader] = useState(<View></View>);
+    const [passwordData, setPasswordData] = useState(<View></View>);
+
+    //Based on isUser condition, it'll render the password data
+    useEffect(() => {
+        //If the profile is the user signed in currently
+        if (isUser == true) {
+            setPasswordHeader(<Text style={styles.infoText}>Password:</Text>)
+            setPasswordData(<Text style={styles.infoText}>{userData.password}</Text>)
+        }
+    }, [])
 
     return <View style={styles.container}>
         <View style={styles.main}>
@@ -20,13 +25,13 @@ const Profile = (props) => {
         <View style={styles.secondary}>
             <View>
                 <Text style={styles.infoText}>Email:</Text>
-                <Text style={styles.infoText}>Password:</Text>
+                {passwordHeader}
                 <Text style={styles.infoText}>Height:</Text>
                 <Text style={styles.infoText}>Weight:</Text>
             </View>
             <View>
                 <Text style={styles.infoText}>{userData.email}</Text>
-                <Text style={styles.infoText}>{userData.password}</Text>
+                {passwordData}
                 <Text style={styles.infoText}>{userData.height} cm</Text>
                 <Text style={styles.infoText}>{userData.weight} lbs</Text>
             </View>

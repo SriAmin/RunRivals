@@ -31,7 +31,7 @@ const Home = (props) => {
         <Text style={{fontSize: 30}}>Welcome to the Home Page</Text>
         <Text>{userData.email}</Text>
         <Text>{userData.password}</Text>
-        <TouchableOpacity onPress={() => {props.navigation.navigate("Profile", {userData: userData})}}>
+        <TouchableOpacity onPress={() => {props.navigation.navigate("Profile", {userData: userData, isUser: true})}}>
           <Image style={{width: 100, height: 100}} source={{uri : userData.photoUrl}} />
         </TouchableOpacity>
         <Text>{userData.name}</Text>
