@@ -37,6 +37,7 @@ const Home = (props) => {
         <Text>{userData.name}</Text>
         <Text>{userData.height}</Text>
         <Text>{userData.weight}</Text>
+        <Text>{userData.distance}</Text>
         <Button title="LeaderBoard" onPress={() => {props.navigation.navigate("Leaderboard", {email: userData.email})}}/>
         <Button title="Fetch Data" onPress={() => {fetchData()}} />
         <Button title="Delete User" onPress={() => {deleteUser()}} />

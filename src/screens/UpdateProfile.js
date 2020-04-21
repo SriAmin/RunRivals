@@ -1,6 +1,8 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import ImageSelector from '../components/ImageSelector'
+import React, { useState, useEffect, Component } from 'react';
+import {View, TextInput, StyleSheet, Text, Image, Dimensions, Animated} from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import ImageSelector from '../components/ImageSelector';
+
 
 import Amplify from "@aws-amplify/core";
 import { DataStore, Predicates } from "@aws-amplify/datastore";
@@ -12,18 +14,19 @@ Amplify.configure(awsconfig);
 
 const UpdateProfile = (props) => {
     let display;
+    let data = props.navigation.getParam('data');
 
     let [sequence, setSequence] = useState(0);
 
     //Setting all state variables for user data
-    let [email, setEmail] = useState(props.navigation.getParam('email'));
-    let [password, setPassword] = useState(props.navigation.getParam('password'));
+    let [email, setEmail] = useState(data.email);
+    let [password, setPassword] = useState(data.password);
 
-    let [photoUri, setPhotoUri] = useState(props.navigation.getParam('photoUrl'));
-    let [name, setName] = useState(props.navigation.getParam('name'));
+    let [photoUri, setPhotoUri] = useState(data.photoUrl);
+    let [name, setName] = useState(data.name);
     
-    let [weight, setWeight] = useState(props.navigation.getParam('weight'));
-    let [height, setHeight] = useState(props.navigation.getParam('height'));
+    let [weight, setWeight] = useState(data.weight.toString());
+    let [height, setHeight] = useState(data.height.toString());
     
     //Setting state variable for animating opacity
     let [fadeAnim, setFade] = useState(new Animated.Value(0))
@@ -46,19 +49,21 @@ const UpdateProfile = (props) => {
 
     //Access AWS DataStore to get and submit data
     let updateData = async () => {
-        //This will grab the data and check if email already exist
+        //This will grab the data and check if email already exist, omits comparions with current users data
         let users = await DataStore.query(User);
         let isValid = true;
         users.forEach(element => {
-            if (email == element.email) {
+            if (email == element.email && element.email != data.email) {
                 isValid = false
             }
         });
 
         //If email doesn't exist then it'll save new user data into the cloud
         if (isValid) {
+            alert("Validation worked!")
         }
         else {
+            alert("Validation failed! \n Email Already Exist")
         }
     }
 
@@ -67,7 +72,6 @@ const UpdateProfile = (props) => {
         display = <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
                     <Animated.View style={{width: inputSlide}}>
                         <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} autoCapitalize="none" />
-                        <TextInput style={styles.textInput} placeholder="Phone Number" value={phoneNum} onChangeText={(text) => setPhoneNum(text)} autoCapitalize="none"/>
                         <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)} autoCapitalize="none"/>
                     </Animated.View>
                     <TouchableOpacity onPress={() => updateSequence()}> 
@@ -96,7 +100,6 @@ const UpdateProfile = (props) => {
                     <Animated.View style={{width: inputSlide}}>
                         <TextInput style={styles.textInput} placeholder="Weight (lbs)" value={weight} onChangeText={(text) => setWeight(text)} keyboardType="numeric"/>
                         <TextInput style={styles.textInput} placeholder="Height (cm)" value={height} onChangeText={(text) => setHeight(text)} keyboardType="numeric"/>
-                        <TextInput style={styles.textInput} placeholder="Goal" value={goal} onChangeText={(text) => setGoal(text)} />
                     </Animated.View>
                     <TouchableOpacity  onPress={() => {updateData()}}>
                         <Text style={styles.btnStyle}>Finish</Text>

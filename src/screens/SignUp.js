@@ -17,7 +17,6 @@ const SignUp = (props) => {
 
     //Setting all state variables for user data
     let [email, setEmail] = useState(props.navigation.getParam('email'));
-    let [phoneNum, setPhoneNum] = useState("");
     let [password, setPassword] = useState("");
 
     let [photoUri, setPhotoUri] = useState(props.navigation.getParam('photoUrl'));
@@ -25,7 +24,6 @@ const SignUp = (props) => {
     
     let [weight, setWeight] = useState("");
     let [height, setHeight] = useState("");
-    let [goal, setGoal] = useState("");
     
     //Setting state variable for animating opacity
     let [fadeAnim, setFade] = useState(new Animated.Value(0))
@@ -94,7 +92,6 @@ const SignUp = (props) => {
         display = <Animated.View style={[styles.inputContainer, {opacity: fadeAnim,}]}>
                     <Animated.View style={{width: inputSlide}}>
                         <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => setEmail(text)} autoCapitalize="none" />
-                        <TextInput style={styles.textInput} placeholder="Phone Number" value={phoneNum} onChangeText={(text) => setPhoneNum(text)} autoCapitalize="none"/>
                         <TextInput style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => setPassword(text)} autoCapitalize="none"/>
                     </Animated.View>
                     <TouchableOpacity onPress={() => updateSequence()}> 
@@ -123,7 +120,6 @@ const SignUp = (props) => {
                     <Animated.View style={{width: inputSlide}}>
                         <TextInput style={styles.textInput} placeholder="Weight (lbs)" value={weight} onChangeText={(text) => setWeight(text)} keyboardType="numeric"/>
                         <TextInput style={styles.textInput} placeholder="Height (cm)" value={height} onChangeText={(text) => setHeight(text)} keyboardType="numeric"/>
-                        <TextInput style={styles.textInput} placeholder="Goal" value={goal} onChangeText={(text) => setGoal(text)} />
                     </Animated.View>
                     <TouchableOpacity  onPress={() => {uploadData()}}>
                         <Text style={styles.btnStyle}>Finish</Text>

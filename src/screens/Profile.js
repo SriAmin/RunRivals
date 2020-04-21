@@ -14,17 +14,22 @@ const Profile = (props) => {
     useEffect(() => {
         //If the profile is the user signed in currently
         if (isUser == true) {
+            console.log(userData)
             setPasswordHeader(<Text style={[styles.infoText, {fontWeight: "500"}]}>Password:</Text>)
             setPasswordData(<Text style={styles.infoText}>{userData.password}</Text>)
             setChangeButton(
                 <View style={styles.ternary}>
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity onPress={() => {props.navigation.navigate("Update Profile", {data:userData})}}>
                         <Text style={styles.changeButton}>Change Information</Text>
                     </TouchableOpacity>
                 </View>
             )
         }
     }, [])
+
+    const updateProfile = () => {
+        
+    }
 
     return <View style={styles.container}>
         <View style={styles.main}>
@@ -37,12 +42,14 @@ const Profile = (props) => {
                 {passwordHeader}
                 <Text style={[styles.infoText, {fontWeight: "500"}]}>Height:</Text>
                 <Text style={[styles.infoText, {fontWeight: "500"}]}>Weight:</Text>
+                <Text style={[styles.infoText, {fontWeight: "500"}]}>Distance:</Text>
             </View>
             <View>
                 <Text style={styles.infoText}>{userData.email}</Text>
                 {passwordData}
                 <Text style={styles.infoText}>{userData.height} cm</Text>
                 <Text style={styles.infoText}>{userData.weight} lbs</Text>
+                <Text style={styles.infoText}>{userData.distance} m</Text>
             </View>
         </View>
         {changeButton}
@@ -65,7 +72,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         flexDirection: "row",
         borderBottomWidth: 2,
-        padding: 25,
+        padding: 50,
     },
     ternary: {
         flex: 2,
