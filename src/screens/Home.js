@@ -1,23 +1,63 @@
-import React, {useState} from 'react'
-import {View, Text, StyleSheet, Button, Image } from 'react-native';
+import React, {useState, useEffect, useRef} from 'react'
+import {View, Text, StyleSheet, Button, Image, Animated } from 'react-native';
 import Amplify from "@aws-amplify/core";
 import { DataStore, Predicates } from "@aws-amplify/datastore";
 import { User } from "../models";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 
+useInterval = (callback, delay) => {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+
+}
+
 const Home = ( { navigation} ) => {
     const [userData, setUserData] = useState(navigation.getParam('userData'));
+    let animation = useRef(new Animated.Value(0));
+    const [progress, setProgress] = useState(0);
+ 
 
     //Will fetch and log the data inside DataStore
     const fetchData = async () => {
         let users = await DataStore.query(User);
         // console.log(users);
-        console.log(userData);
+        console.log(userData.photoUrl);
     }
 
+    useInterval(() => {
+      if(progress < 100) {
+        setProgress(progress + 5);
+      }
+    }, 1000);
+
+    useEffect(() => {
+      Animated.timing(animation.current, {
+        toValue: progress,
+        duration: 100
+      }).start();
+    },[progress])
+
+    const width = animation.current.interpolate({
+      inputRange: [0, 100],
+      outputRange: ["0%", '100%'],
+      extrapolate: "clamp"
+    })
     //Used for debugging, it'll delete the user in DataStore
-    const deleteUser = async ({navigation}) => {
+    const deleteUser = async ({ navigation }) => {
       await DataStore.delete(User, c => c.email("eq", userData.email));
     }
 
@@ -30,11 +70,16 @@ const Home = ( { navigation} ) => {
         </View>
         <Text style = {styles.averageSpeedLabel}>Average Speed: </Text>
         <Text style={styles.averageSpeed}>km/h</Text>
-        <View style={styles.progressBar}></View>
-        <Text style={styles.distanceLabel}>Distance Achieved: 0 km</Text>
+        <View style={styles.progressBar}>
+          <Animated.View style={[StyleSheet.absoluteFill], { backgroundColor: "#8BED4F", width,   borderRadius: 20 }}/>
+        </View>
+        <Text style={styles.distanceLabel}>{`Distance Achieved: ${progress} km`}</Text>
         <Text>{userData.email}</Text>
-        <Image styles = {styles.profilePicture} />
+        <Text>{userData.password}</Text>
+        <Image style={{width: 100, height: 100,}} source={{uri : userData.photoUrl}} />
         <Text>{userData.name}</Text>
+        <Text>{userData.height}</Text>
+        <Text>{userData.weight}</Text>
         <Button title="Fetch Data" onPress={() => {fetchData()}} />
         <Button title="Delete User" onPress={() => {deleteUser()}} />
     </View>
@@ -42,7 +87,9 @@ const Home = ( { navigation} ) => {
 
 const styles = StyleSheet.create({
     container: {
-      alignItems: 'center'
+      alignItems: 'center',
+      justifyContent:'center',
+      flex: 1
     },
     profilePicture: {
       height: 100,
@@ -86,9 +133,10 @@ const styles = StyleSheet.create({
       width: '90%',
       alignSelf:'center',
       backgroundColor: 'white',
-      borderColor: 'blue',
+      borderColor: 'aqua',
       borderWidth: 2,
-      borderRadius: 20
+      borderRadius: 20,
+      flexDirection:'row'
     },
     distanceLabel: {
       fontSize: 20,
