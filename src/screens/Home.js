@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react'
+import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, StyleSheet, Button, Image, Animated } from 'react-native';
 
 import { TouchableOpacity } from 'react-native-gesture-handler'
@@ -8,43 +8,29 @@ import { User } from "../models";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 
-useInterval = (callback, delay) => {
-  const savedCallback = useRef();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-
-}
-
-const Home = ( { navigation} ) => {
-    const [userData, setUserData] = useState(navigation.getParam('userData'));
+const Home = (props) => {
+    const [userData, setUserData] = useState(props.navigation.getParam('userData'));
     let animation = useRef(new Animated.Value(0));
     const [progress, setProgress] = useState(0);
- 
-
-    //Will fetch and log the data inside DataStore
-    const fetchData = async () => {
-        let users = await DataStore.query(User);
-        // console.log(users);
-        console.log(userData.photoUrl);
+    
+    useInterval = (callback, delay) => {
+      const savedCallback = useRef();
+    
+      useEffect(() => {
+        savedCallback.current = callback;
+      }, [callback]);
+      // Set up the interval.
+      useEffect(() => {
+        function tick() {
+          savedCallback.current();
+        }
+        if (delay !== null) {
+          let id = setInterval(tick, delay);
+          return () => clearInterval(id);
+        }
+      }, [delay]);
+    
     }
-
-    useInterval(() => {
-      if(progress < 100) {
-        setProgress(progress + 5);
-      }
-    }, 1000);
 
     useEffect(() => {
       Animated.timing(animation.current, {
@@ -60,14 +46,14 @@ const Home = ( { navigation} ) => {
     })
 
     return <View style={styles.container}>
-       <TouchableOpacity onPress={() => {props.navigation.navigate("Profile", {userData: userData, isUser: true})}}>
+      <TouchableOpacity onPress={() => {props.navigation.navigate("Profile", {userData: userData, isUser: true})}}>
           <Image style={{width: 100, height: 100}} source={{uri : userData.photoUrl}} />
         </TouchableOpacity>
         <Text style = {styles.rankLabel}>Rank: </Text>
         <Text style = {styles.rank}>0/60</Text>
-        <View style={{width: 200, alignItems: "stretch"}}>
-        <Button style = {styles.leaderboardButton} title="Leader Board" onPress={() => {props.navigation.navigate("Leaderboard", {email: userData.email})}}/>
-        </View>
+        <View style={{width: 200, alignItems: "stretch"}}></View>
+        <Button title="LeaderBoard" onPress={() => {props.navigation.navigate("Leaderboard", {email: userData.email})}}/>
+        <Text>{userData.name}</Text>
         <Text style = {styles.averageSpeedLabel}>Average Speed: </Text>
         <Text style={styles.averageSpeed}>km/h</Text>
         <View style={styles.progressBar}>
@@ -139,8 +125,57 @@ const styles = StyleSheet.create({
       height: 200, 
       borderWidth: 1, 
       borderRadius: 50,
-      marginVertical: 25,
+      marginVertical: 10,
   },
+    profilePicture: {
+      height: 100,
+      width: 100
+    },
+    rankLabel: {
+      fontSize: 45,
+      fontWeight: 'bold',
+      marginTop: 25
+    },
+    rank: {
+      fontSize: 35,
+      marginTop: 30,
+      marginBottom: 50
+    },
+    leaderboardButton: {
+      width: 100,
+      padding: 12.5,
+      paddingLeft: 100,
+      paddingRight: 50,
+      borderRadius: 10,
+      borderWidth: 2,
+      marginBottom:50,
+      textAlign:'justify'
+    },
+    averageSpeedLabel: {
+      fontSize: 35,
+      width: '65.25%',
+      fontWeight:'bold',
+      marginTop: 25,
+      marginBottom: 10
+    },
+    averageSpeed: {
+      fontSize: 25,
+      marginHorizontal: 50,
+    },
+    progressBar: {
+      height: 20,
+      width: '90%',
+      alignSelf:'center',
+      backgroundColor: 'white',
+      borderColor: 'aqua',
+      borderWidth: 2,
+      borderRadius: 20,
+      flexDirection:'row'
+    },
+    distanceLabel: {
+      fontSize: 20,
+      marginVertical: 30
+    }
 });
 
 export default Home;
