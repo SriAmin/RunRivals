@@ -12,13 +12,11 @@ const ImageSelector = (props) => {
     
     //Ask permission to access camera roll
     const getImagePermission = async (props) => {
-        if (Constants.platform.ios) {
             const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             setPermission(status === 'granted');
             if (status !== 'granted') {
                 alert("Unless you want the default image, we need your permissions to access your photots");
             }
-        } 
     }
 
     //Ask permissions to access camera

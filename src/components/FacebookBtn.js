@@ -50,6 +50,7 @@ const FacebookBtn = (props) => {
                     userData["name"] = element.name
                     userData["height"] = element.height
                     userData["weight"] = element.weight
+                    userData["distance"] = element.distance
                     doesExist = true
                  }
              });

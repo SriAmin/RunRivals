@@ -2,8 +2,14 @@ import React, {useEffect} from 'react';
 import {View, Text, StyleSheet, Image} from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const UserDetail = (props) => {
+import Amplify from '@aws-amplify/core';
+import {DataStore, Predicates } from '@aws-amplify/datastore';
+import { User } from "../models";
 
+import awsconfig from '../../aws-exports';
+Amplify.configure(awsconfig);
+
+const UserDetail = (props) => {
     //Used the determine if the styling is changed based of the user being shown
     let viewStyle = () => {
         //If the data is the user logged in currently
@@ -34,7 +40,26 @@ const UserDetail = (props) => {
         console.log(props.data.email)
     }, [])
 
-    return <TouchableOpacity style={viewStyle()} onPress={() => {}}>
+    //Navigate to the Profile page with the user data selected
+    const navigateProfile = async () => {
+        //Queries the user based on email
+        let user = await DataStore.query(User, e => e.email("eq", props.data.email))
+        user = user[0]
+
+        //Creates an object to pass onto the profile page
+        let data = {
+            email: user.email,
+            password: user.password,
+            photoUrl: user.photoUrl,
+            name: user.name,
+            height: user.height,
+            weight: user.weight
+        }
+        console.log(data)
+        props.navigate("Profile", {userData: data, isUser: props.data.isUser})
+    }
+
+    return <TouchableOpacity style={viewStyle()} onPress={() => {navigateProfile()}}>
         <View style={styles.rankContainer}>
             <Text style={[styles.textStyle, {fontSize: 25, borderBottomWidth: 2, borderColor: "black"}]}># {props.rank}</Text>
             <View style={styles.spacing}/>

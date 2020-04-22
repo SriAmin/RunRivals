@@ -3,6 +3,7 @@ import {View, TextInput, StyleSheet, Text, Image, Dimensions, Animated} from 're
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import ImageSelector from '../components/ImageSelector';
 
+
 import Amplify from "@aws-amplify/core";
 import { DataStore, Predicates } from "@aws-amplify/datastore";
 import { User } from "../models";
@@ -10,20 +11,22 @@ import { User } from "../models";
 import awsconfig from "../../aws-exports";
 Amplify.configure(awsconfig);
 
-const SignUp = (props) => {
-    let display;
 
-    let [sequence, setSequence] = useState(props.navigation.getParam('sequence'));
+const UpdateProfile = (props) => {
+    let display;
+    let data = props.navigation.getParam('data');
+
+    let [sequence, setSequence] = useState(0);
 
     //Setting all state variables for user data
-    let [email, setEmail] = useState(props.navigation.getParam('email'));
-    let [password, setPassword] = useState("");
+    let [email, setEmail] = useState(data.email);
+    let [password, setPassword] = useState(data.password);
 
-    let [photoUri, setPhotoUri] = useState(props.navigation.getParam('photoUrl'));
-    let [name, setName] = useState(props.navigation.getParam('name'));
+    let [photoUri, setPhotoUri] = useState(data.photoUrl);
+    let [name, setName] = useState(data.name);
     
-    let [weight, setWeight] = useState("");
-    let [height, setHeight] = useState("");
+    let [weight, setWeight] = useState(data.weight.toString());
+    let [height, setHeight] = useState(data.height.toString());
     
     //Setting state variable for animating opacity
     let [fadeAnim, setFade] = useState(new Animated.Value(0))
@@ -45,12 +48,12 @@ const SignUp = (props) => {
     let loadAnimation = () => { textSlide.start(); fadeIn.start(); progressSlide.start(); }
 
     //Access AWS DataStore to get and submit data
-    let uploadData = async () => {
-        //This will grab the data and check if email already exist
+    let updateData = async () => {
+        //This will grab the data and check if email already exist, omits comparions with current users data
         let users = await DataStore.query(User);
         let isValid = true;
         users.forEach(element => {
-            if (email == element.email) {
+            if (email == element.email && element.email != data.email) {
                 isValid = false
             }
         });
@@ -59,6 +62,11 @@ const SignUp = (props) => {
         if (isValid) {
             let tempHeight = parseInt(height)
             let tempWidth = parseInt(weight)
+            
+            //Deletes the current user
+            await DataStore.delete(User, c => c.email("eq", data.email));
+
+            //Uploading a copy with the new data onto the datastore
             await DataStore.save(
                 new User({
                 email: email,
@@ -67,23 +75,13 @@ const SignUp = (props) => {
                 name: name,
                 height: tempHeight,
                 weight: tempWidth,
-                distance: 0  
+                distance: data.distance 
                 })
-            )
-            //Assign the data and send the user to the home page
-            let user = {};
-            user["email"] = email
-            user["password"] = password
-            user["photoUrl"] = photoUri
-            user["name"] = name
-            user["height"] = height
-            user["weight"] = weight
-            user["distance"] = 0;
-
-            props.navigation.navigate('Home Page',  {userData: user});
+            );
+            alert("Update Success \n Please go back and log back in")
         }
         else {
-            alert("That Username already exist, please submit a new email")
+            alert("Validation failed! \n Email Already Exist")
         }
     }
 
@@ -121,7 +119,7 @@ const SignUp = (props) => {
                         <TextInput style={styles.textInput} placeholder="Weight (lbs)" value={weight} onChangeText={(text) => setWeight(text)} keyboardType="numeric"/>
                         <TextInput style={styles.textInput} placeholder="Height (cm)" value={height} onChangeText={(text) => setHeight(text)} keyboardType="numeric"/>
                     </Animated.View>
-                    <TouchableOpacity  onPress={() => {uploadData()}}>
+                    <TouchableOpacity  onPress={() => {updateData()}}>
                         <Text style={styles.btnStyle}>Finish</Text>
                     </TouchableOpacity>
                 </Animated.View>
@@ -129,7 +127,7 @@ const SignUp = (props) => {
     }
 
     return <View style={styles.container}>
-        <Animated.View style={{height: 5, backgroundColor: '#00b4cf', width: slideAnim}}/>
+        <Animated.View style={{height: 5, backgroundColor: '#65418F', width: slideAnim}}/>
         {display}
     </View>
 
@@ -145,6 +143,7 @@ const styles = StyleSheet.create({
         marginTop: 100,
     },
     textInput: {
+        borderBottomColor: "#00b4cf",
         borderBottomWidth: 2,
         borderRadius: 5,
         padding: 10,
@@ -156,13 +155,12 @@ const styles = StyleSheet.create({
         fontSize: 20,
         borderWidth: 5,
         borderRadius: 10,
-        borderColor: '#00b4cf',
+        borderColor: '#65418F',
         padding: 10,
         paddingLeft: 55,
         paddingRight: 55,
         marginTop: 50,
     },
+})
 
-});
-
-export default SignUp;
+export default UpdateProfile;

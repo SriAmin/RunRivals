@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react'
 import {View, Text, StyleSheet, Button, Image, Animated } from 'react-native';
+
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import Amplify from "@aws-amplify/core";
 import { DataStore, Predicates } from "@aws-amplify/datastore";
 import { User } from "../models";
@@ -56,17 +58,15 @@ const Home = ( { navigation} ) => {
       outputRange: ["0%", '100%'],
       extrapolate: "clamp"
     })
-    //Used for debugging, it'll delete the user in DataStore
-    const deleteUser = async ({ navigation }) => {
-      await DataStore.delete(User, c => c.email("eq", userData.email));
-    }
 
     return <View style={styles.container}>
-        <Text style={{fontSize: 30}}>Welcome to the Home Page</Text>
+       <TouchableOpacity onPress={() => {props.navigation.navigate("Profile", {userData: userData, isUser: true})}}>
+          <Image style={{width: 100, height: 100}} source={{uri : userData.photoUrl}} />
+        </TouchableOpacity>
         <Text style = {styles.rankLabel}>Rank: </Text>
         <Text style = {styles.rank}>0/60</Text>
         <View style={{width: 200, alignItems: "stretch"}}>
-        <Button style = {styles.leaderboardButton} title="Leader Board"/>
+        <Button style = {styles.leaderboardButton} title="Leader Board" onPress={() => {props.navigation.navigate("Leaderboard", {email: userData.email})}}/>
         </View>
         <Text style = {styles.averageSpeedLabel}>Average Speed: </Text>
         <Text style={styles.averageSpeed}>km/h</Text>
@@ -74,14 +74,6 @@ const Home = ( { navigation} ) => {
           <Animated.View style={[StyleSheet.absoluteFill], { backgroundColor: "#8BED4F", width,   borderRadius: 20 }}/>
         </View>
         <Text style={styles.distanceLabel}>{`Distance Achieved: ${progress} km`}</Text>
-        <Text>{userData.email}</Text>
-        <Text>{userData.password}</Text>
-        <Image style={{width: 100, height: 100,}} source={{uri : userData.photoUrl}} />
-        <Text>{userData.name}</Text>
-        <Text>{userData.height}</Text>
-        <Text>{userData.weight}</Text>
-        <Button title="Fetch Data" onPress={() => {fetchData()}} />
-        <Button title="Delete User" onPress={() => {deleteUser()}} />
     </View>
 }
 
@@ -141,7 +133,14 @@ const styles = StyleSheet.create({
     distanceLabel: {
       fontSize: 20,
       marginVertical: 30
-    }
+    },
+    imageStyle: {
+      width: 200, 
+      height: 200, 
+      borderWidth: 1, 
+      borderRadius: 50,
+      marginVertical: 25,
+  },
 });
 
 export default Home;

@@ -30,11 +30,13 @@ const Login = (props) => {
                 user["name"] = element.name
                 user["height"] = element.height
                 user["weight"] = element.weight
+                user["distance"] = element.distance
                 pass = true;
             }
         });
         //If passed, it'll navigate or just alert the user of authentication failure
         if (pass) {
+            console.log(user)
             props.navigation.navigate('Home Page', {userData: user});
         }
         else {
