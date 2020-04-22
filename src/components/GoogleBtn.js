@@ -44,6 +44,7 @@ const GoogleBtn = (props) => {
                         userData["name"] = element.name
                         userData["height"] = element.height
                         userData["weight"] = element.weight
+                        userData["distance"] = element.height
                         doesExist = true
                     }
                 });
