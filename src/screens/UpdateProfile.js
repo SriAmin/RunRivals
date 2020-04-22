@@ -60,7 +60,25 @@ const UpdateProfile = (props) => {
 
         //If email doesn't exist then it'll save new user data into the cloud
         if (isValid) {
-            alert("Validation worked!")
+            let tempHeight = parseInt(height)
+            let tempWidth = parseInt(weight)
+            
+            //Deletes the current user
+            await DataStore.delete(User, c => c.email("eq", data.email));
+
+            //Uploading a copy with the new data onto the datastore
+            await DataStore.save(
+                new User({
+                email: email,
+                password: password,
+                photoUrl: photoUri,
+                name: name,
+                height: tempHeight,
+                weight: tempWidth,
+                distance: data.distance 
+                })
+            );
+            alert("Update Success \n Please go back and log back in")
         }
         else {
             alert("Validation failed! \n Email Already Exist")
